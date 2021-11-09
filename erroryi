@@ -1,0 +1,25 @@
+import numpy as np
+from IPython.display import display, Latex
+#define function wich calculates fit parameters
+def geradenfit(x_data,y_data,y_err):
+    #calculating weight
+    weight = 1/y_err**2
+    #calculating weighted avarges
+    x_avrg = np.average(x_data,weights=weight)
+    y_avrg = np.average(y_data,weights=weight)
+    xy_avrg = np.average(x_data*y_data,weights=weight)
+    x_qua_avrg = np.average(x_data**2,weights=weight)
+    m = (xy_avrg-x_avrg*y_avrg)/(x_qua_avrg-x_avrg**2)
+    n = (x_qua_avrg*y_avrg-x_avrg*xy_avrg)/(x_qua_avrg-x_avrg**2)
+    y_err_avrg = x_data.size/np.sum(weight)
+    m_err =np.sqrt(y_err_avrg/(x_data.size*(x_qua_avrg-x_avrg**2)) )
+    n_err = np.sqrt(y_err_avrg*x_qua_avrg/(x_data.size*(x_qua_avrg-x_avrg**2)))
+    
+    print(display(Latex(f'$\overline{{x}}={x_avrg}$' )))
+    print(display(Latex(f'$\overline{{y}}={y_avrg}$')))
+    print(display(Latex(f'$\overline{{xy}}={xy_avrg}$')))
+    print(display(Latex(f'$\overline{{x^2}}={x_qua_avrg}$')))
+    print(display(Latex(f'$m={m}$')))
+    print(display(Latex(f'$n={n}$')))
+    print(display(Latex(f'$m_{{err}}={m_err}$')))
+    print(display(Latex(f'$n_{{err}}={n_err}$')))
